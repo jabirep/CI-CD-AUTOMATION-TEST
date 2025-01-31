@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <!-- Internal CSS for Styling -->
+     <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #4A90E2;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        /* Container for better layout */
+        .container {
+            max-width: 90px;
+            margin: 100 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Employee Table Styling */
+        table {
+            width: 100%; /* Make the table span the full width of the container */
+            border-collapse: collapse; /* Collapse the borders for a cleaner look */
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px; /* Add padding inside table cells */
+            text-align: left; /* Left-align the text */
+            border: 1px solid #ddd; /* Add a light border around each cell */
+        }
+
+        /* Header Styling */
+        th {
+            background-color: #4A90E2; /* Blue background for the header */
+            color: white; /* White text for the header */
+            font-weight: bold; /* Make the header text bold */
+        }
+
+        /* Row Styling */
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Light gray background for even rows */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff; /* White background for odd rows */
+        }
+
+        /* Hover effect on rows */
+        tr:hover {
+            background-color: #f1f1f1; /* Light gray background when hovering over a row */
+        }
+
+        /* Button Styling */
+        .btn {
+            padding: 8px 15px; /* Add padding to buttons */
+            margin: 5px; /* Space between buttons */
+            background-color: #4A90E2; /* Blue background for the button */
+            color: white; /* White text on the button */
+            border-radius: 5px; /* Rounded corners for the buttons */
+            border: none; /* Remove the border */
+            cursor: pointer; /* Make the cursor a pointer on hover */
+            font-size: 14px; /* Font size for the button */
+        }
+
+
+        /* Employee List */
+        #employeeList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #employeeList li {
+            background-color: #e9ecef;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #employeeList button {
+            padding: 15 25px;
+            margin-left: 10px;
+            border: none;
+            background-color: #4A90E2;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            align-self: left;
+        }
+
+        #employeeList button:hover {
+            background-color: #357ABD;
+        }
+
+        /* Form Styling */
+        #employeeForm {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #4A90E2;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            align-self: left;
+            width: 150px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #357ABD;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 600px) {
+            #employeeForm {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            button[type="submit"] {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Add / Update Employee Details</h1>
+
+   
+
+    <!-- Employee Form -->
+    <form id="employeeForm">
+        <input type="hidden" id="employeeId" />
+        <label for="employeeName">Name: </label><br />
+        <input type="text" id="employeeName"  /><br />
+        <label for="employeeEmail">Email: </label><br />
+        <input type="email" id="employeeEmail"  /><br />
+        <label for="employeePosition">Position: </label><br />
+        <input type="text" id="employeePosition"  /><br />
+        <button type="submit">Save Employee</button><br />
+    </form>
+
+     <!-- Employee List -->
+     <h2>All Employees Details</h2>
+     <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Employees will be populated here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+       $(document).ready(function () {
+            // Function to fetch and display all employees
+            function loadEmployees() {
+                $.get("/api/employees", function (data) {
+                    let employeeTable = $("#employeeTable tbody");
+                    employeeTable.empty(); // Clear the table body first
+                    data.forEach(function (employee) {
+                        employeeTable.append(
+                            `<tr>
+                                <td>${employee.name}</td>
+                                <td>${employee.email}</td>
+                                <td>${employee.position}</td>
+                                <td>
+                                    <button class="btn" onclick="editEmployee(${employee.id})">Edit</button>
+                                    <button class="btn" onclick="deleteEmployee(${employee.id})">Delete</button>
+                                </td>
+                            </tr>`
+                        );
+                    });
+                });
+            }
+
+            // Load all employees initially
+            loadEmployees();
+
+            // Handle form submission to create or update an employee
+            $("#employeeForm").on("submit", function (e) {
+                e.preventDefault();
+                let employeeData = {
+                    name: $("#employeeName").val(),
+                    email: $("#employeeEmail").val(),
+                    position: $("#employeePosition").val()
+                };
+
+                let employeeId = $("#employeeId").val();
+                let method = employeeId ? "PUT" : "POST";
+                let url = employeeId ? `/api/employees/${employeeId}` : "/api/employees";
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    contentType: "application/json",
+                    data: JSON.stringify(employeeData),
+                    success: function () {
+                        alert("Employee saved successfully!");
+                        loadEmployees();
+                        $("#employeeForm")[0].reset();
+                        $("#employeeId").val(""); // Reset employeeId after saving
+                    },
+                    error: function () {
+                        alert("Error saving employee!");
+                    }
+                });
+            });
+
+            // Edit employee
+            window.editEmployee = function (id) {
+                $.get(`/api/employees/${id}`, function (data) {
+                    $("#employeeId").val(data.id);
+                    $("#employeeName").val(data.name);
+                    $("#employeeEmail").val(data.email);
+                    $("#employeePosition").val(data.position);
+                });
+            };
+
+            // Delete employee
+            window.deleteEmployee = function (id) {
+                if (confirm("Are you sure you want to delete this employee?")) {
+                    $.ajax({
+                        url: `/api/employees/${id}`,
+                        type: "DELETE",
+                        success: function () {
+                            alert("Employee deleted successfully!");
+                            loadEmployees();
+                        },
+                        error: function () {
+                            alert("Error deleting employee!");
+                        }
+                    });
+                }
+            };
+        });
+    </script>
+</body>
