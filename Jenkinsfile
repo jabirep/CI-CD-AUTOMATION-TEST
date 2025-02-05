@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', 
-                url: 'https://github.com/jabirep/CI-CD-REPOSITORY',
+                url: 'https://github.com/jabirep/CI-CD-REPOSITORY.git',
                 credentialsId: 'f6b4b94c-cf4b-4015-9ec0-3e7afbf90d05'
             
             }
