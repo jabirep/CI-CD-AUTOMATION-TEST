@@ -35,7 +35,6 @@ pipeline {
     post {
     success {
         echo 'Build and tests completed successfully!'
-        mail to: 'jabirep97@gmail.com', subject: 'Build Success', body: 'The build and tests succeeded!'
     }
     failure {
         echo 'Build or tests failed!'
