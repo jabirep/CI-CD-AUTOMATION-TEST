@@ -25,14 +25,14 @@ pipeline {
         }
 
         // Stage 3: Run unit tests
-        /*stage('Test') {
+        stage('Test') {
             steps {
                 bat 'mvn test'
             }
-        }*/
+        }
     }
 
-   /* post {
+    post {
         // Post-build actions
         success {
             echo 'Build and tests completed successfully!'
@@ -40,5 +40,5 @@ pipeline {
         failure {
             echo 'Build or tests failed!'
         }
-    }*/
+    }
 }
