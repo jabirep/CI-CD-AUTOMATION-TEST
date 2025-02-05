@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define environment variables if needed
-        JAVA_HOME = 'C:\Program Files\Java\jdk-17' // Set your Java home path
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17' // Set your Java home path
     }
 
     stages {
