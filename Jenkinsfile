@@ -35,11 +35,9 @@ pipeline {
     post {
     success {
         echo 'Build and tests completed successfully!'
-        mail to: 'jabirep97@gmail.com', subject: 'Build Success', body: 'The build succeeded!'
     }
     failure {
         echo 'Build or tests failed!'
-        mail to: 'jabirep97@gmail.com', subject: 'Build Failed', body: 'The build failed. Please check Jenkins.'
     }
 }
 }
