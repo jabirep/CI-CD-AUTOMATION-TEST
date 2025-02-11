@@ -30,6 +30,11 @@ pipeline {
                 bat 'mvn test'
             }
         }
+        stage('Test Docker') {
+            steps {
+                bat 'docker ps'
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
@@ -49,7 +54,7 @@ pipeline {
                     // Step 3: Run Docker container (Deploy)
                     echo "Deploying Docker container..."
                     bat """
-                        docker run -d -p 8080:8080 --name your-app-container ${IMAGE_NAME}:${DOCKER_TAG}
+                        docker-compose up --build -d
                     """
                 }
     }
