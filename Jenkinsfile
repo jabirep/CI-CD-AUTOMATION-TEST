@@ -4,6 +4,10 @@ pipeline {
     environment {
         // Define environment variables if needed
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17' // Set your Java home path
+        DOCKER_USERNAME = 'jabirep'
+        DOCKER_PASSWORD = 'Subaida@415434'
+        IMAGE_NAME = 'hrmsImage'
+        TAG_NAME = 'latest'
     }
 
     stages {
@@ -41,13 +45,13 @@ pipeline {
                     // Step 1: Build Docker image
                     echo "Building Docker image..."
                     bat """
-                        docker build -t ${hrmsImage}:${latest} .
+                        docker build -t ${IMAGE_NAME}:${TAG_NAME} .
                     """
                     // Step 2: Push Docker image to Docker registry (optional)
                     echo "Pushing Docker image to registry..."
                     bat """
-                        docker login -u ${jabirep} -p ${Subaida@415434}
-                        docker push ${hrmsImage}:${latest}
+                        docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                        docker push ${IMAGE_NAME}:${TAG_NAME}
                     """
                     
                     // Step 3: Run Docker container (Deploy)
