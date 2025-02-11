@@ -58,6 +58,7 @@ pipeline {
                 }
             }
     }
+    }
 
     post {
     success {
@@ -67,5 +68,5 @@ pipeline {
         echo 'Build or tests failed!'
     }
 }
-}
+
 }
