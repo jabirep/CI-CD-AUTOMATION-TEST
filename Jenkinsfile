@@ -30,11 +30,33 @@ pipeline {
                 bat 'mvn test'
             }
         }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Step 1: Build Docker image
+                    echo "Building Docker image..."
+                    bat """
+                        docker build -t ${hrmsImage}:${latest} .
+                    """
+
+                    // Step 2: Push Docker image to Docker registry (optional)
+                    echo "Pushing Docker image to registry..."
+                    bat """
+                        docker login -u ${jabirep} -p ${Subaida@415434}
+                        docker push ${hrmsImage}:${latest}
+                    """
+                    
+                    // Step 3: Run Docker container (Deploy)
+                    echo "Deploying Docker container..."
+                    bat """
+                        docker run -d -p 8080:8080 --name your-app-container ${IMAGE_NAME}:${DOCKER_TAG}
+                    """
+                }
     }
 
     post {
     success {
-        echo 'Build and tests completed successfully!'
+        echo 'Build and tests completed successfully! and deployed'
     }
     failure {
         echo 'Build or tests failed!'
