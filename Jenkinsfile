@@ -43,6 +43,12 @@ pipeline {
                     bat """
                         docker build -t ${hrmsImage}:${latest} .
                     """
+                    // Step 2: Push Docker image to Docker registry (optional)
+                    echo "Pushing Docker image to registry..."
+                    sh """
+                        docker login -u ${jabirep} -p ${Subaida@415434}
+                        docker push ${hrmsImage}:${latest}
+                    """
                     
                     // Step 3: Run Docker container (Deploy)
                     echo "Deploying Docker container..."
@@ -50,6 +56,7 @@ pipeline {
                         docker-compose up --build -d
                     """
                 }
+            }
     }
 
     post {
@@ -59,5 +66,6 @@ pipeline {
     failure {
         echo 'Build or tests failed!'
     }
+}
 }
 }
