@@ -45,7 +45,7 @@ pipeline {
                     """
                     // Step 2: Push Docker image to Docker registry (optional)
                     echo "Pushing Docker image to registry..."
-                    sh """
+                    bat """
                         docker login -u ${jabirep} -p ${Subaida@415434}
                         docker push ${hrmsImage}:${latest}
                     """
