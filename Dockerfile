@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/HRMS-0.0.1-SNAPSHOT.jar /app/myapp.jar
 
 # Expose the port that the Spring Boot application will run on
-EXPOSE 8080
+EXPOSE 8082
 
 # Run the executable JAR file
 ENTRYPOINT ["java", "-jar", "/app/myapp.jar"]
