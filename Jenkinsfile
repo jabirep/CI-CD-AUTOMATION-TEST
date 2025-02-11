@@ -6,7 +6,7 @@ pipeline {
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17' // Set your Java home path
         DOCKER_USERNAME = 'jabirep'
         DOCKER_PASSWORD = 'Subaida@415434'
-        IMAGE_NAME = 'hrmsImage'
+        IMAGE_NAME = 'hrms'
         TAG_NAME = 'latest'
     }
 
