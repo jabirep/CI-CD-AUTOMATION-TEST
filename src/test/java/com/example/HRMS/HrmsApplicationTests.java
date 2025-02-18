@@ -30,7 +30,7 @@ class HrmsApplicationTests {
 	@Test
 	public void tittleVerification() {
 
-		driver.get("http://localhost:8082");
+		//driver.get("http://localhost:8082");
 
         // Print and verify title
         String title = driver.getTitle();
@@ -44,7 +44,7 @@ class HrmsApplicationTests {
 	@Test
     public void addNewEmployee() {
         // Navigate to the "Add New Employee" page
-        driver.get("http://localhost:8082/");
+       // driver.get("http://localhost:8082/");
 
         // Locate form fields and fill them
         WebElement nameField = driver.findElement(By.id("employeeName"));  // Replace with actual field locator
