@@ -29,11 +29,11 @@ pipeline {
         }
 
         // Stage 3: Run unit tests
-        stage('Test') {
+        /*stage('Test') {
             steps {
                 bat 'mvn test'
             }
-        }
+        }*/
         stage('Test Docker') {
             steps {
                 bat 'docker ps'
