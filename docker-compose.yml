@@ -12,9 +12,9 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: create
     depends_on:
       - mysql-db
-    entrypoint: ["./wait-for-it.sh", "mysql-db:3306", "--", "java", "-jar", "/app/myapp.jar"]
+    # entrypoint: ["./wait-for-it.sh", "mysql-db:3306", "--", "java", "-jar", "/app/myapp.jar"]
     # Optionally, you can add a wait-for-it script to wait for MySQL
-    # entrypoint: ["java", "-jar", "/app/myapp.jar"]
+    entrypoint: ["java", "-jar", "/app/myapp.jar"]
 
   mysql-db:
     image: mysql:8.0
