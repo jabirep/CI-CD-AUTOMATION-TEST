@@ -12,8 +12,9 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: create
     depends_on:
       - mysql-db
+    entrypoint: ["./wait-for-it.sh", "mysql-db:3306", "--", "java", "-jar", "/app/myapp.jar"]
     # Optionally, you can add a wait-for-it script to wait for MySQL
-    entrypoint: ["java", "-jar", "/app/myapp.jar"]
+    # entrypoint: ["java", "-jar", "/app/myapp.jar"]
 
   mysql-db:
     image: mysql:8.0
@@ -21,14 +22,14 @@ services:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: employee_db
     ports:
-      - "3307:3306"
+      - "3307:3306"  # MySQL on host port 3307, container port 3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--host=localhost", "--user=root", "--password=pass"]
+      test: ["CMD", "mysqladmin", "ping", "--host=mysql-db", "--user=root", "--password=pass"]
       interval: 10s
       retries: 5
     volumes:
       - mysql-data:/var/lib/mysql
 
 volumes:
-  mysql-data:
+  mysql-data: # Persistent storage for MySQL
 
