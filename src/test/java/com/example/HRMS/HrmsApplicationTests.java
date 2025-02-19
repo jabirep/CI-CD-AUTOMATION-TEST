@@ -45,7 +45,7 @@ class HrmsApplicationTests {
 	@Test
     public void addNewEmployee() {
         // Navigate to the "Add New Employee" page
-        driver.get("http://localhost:8080/");
+       	driver.get("http://localhost:8080/");
 
         // Locate form fields and fill them
         WebElement nameField = driver.findElement(By.id("employeeName"));  // Replace with actual field locator
