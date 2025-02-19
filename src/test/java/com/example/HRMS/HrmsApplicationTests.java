@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+
 @SpringBootTest
 class HrmsApplicationTests {
 
@@ -30,7 +31,7 @@ class HrmsApplicationTests {
 	@Test
 	public void tittleVerification() {
 
-		driver.get("http://localhost:8080");
+		driver.get("http://localhost:8080/");
 
         // Print and verify title
         String title = driver.getTitle();
