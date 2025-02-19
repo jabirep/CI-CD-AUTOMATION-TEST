@@ -11,6 +11,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 
@@ -18,9 +24,25 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 class HrmsApplicationTests {
 
 	public static WebDriver driver;
+	public static ExtentSparkReporter extentSparkReporter;
+	public static ExtentReports extentReports;
+	public static ExtentTest extentTest;
+	
 
 	@BeforeEach
 	public void browserSetup(){
+
+		extentSparkReporter  = new ExtentSparkReporter(System.getProperty("user.dir") + "/target/extentReport.html");
+       	extentReports = new ExtentReports();
+       	extentReports.attachReporter(extentSparkReporter);
+
+		//configuration items to change the look and feel
+       	//add content, manage tests etc
+		extentSparkReporter.config().setDocumentTitle("Simple Automation Report");
+		extentSparkReporter.config().setReportName("Test Report");
+		extentSparkReporter.config().setTheme(Theme.STANDARD);
+		//extentSparkReporter.config().setTheme(Theme.DARK);
+		//extentSparkReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		WebDriverManager.firefoxdriver().setup();
 		driver=new FirefoxDriver();
@@ -31,6 +53,9 @@ class HrmsApplicationTests {
 	@Test
 	public void tittleVerification() {
 
+		
+		extentTest = extentReports.createTest("Test Title Verification");
+
 		driver.get("http://localhost:8080/");
 
         // Print and verify title
@@ -40,10 +65,15 @@ class HrmsApplicationTests {
         // Add assertion if necessary
         assert title.equals("Employee Management");
 
+		extentTest.log(Status.PASS, "TITTLE VERIFICATION PASSED");
+
 	}
 
 	@Test
     public void addNewEmployee() {
+
+		extentTest = extentReports.createTest("EMPLOYEE SAVE TEST");
+
         // Navigate to the "Add New Employee" page
        	driver.get("http://localhost:8080/");
 
@@ -60,10 +90,15 @@ class HrmsApplicationTests {
         // Locate the submit button and click it
         WebElement submitButton = driver.findElement(By.xpath("//input[@id='employeePosition']"));  // Replace with actual button locator
         submitButton.click();
+
+		extentTest.log(Status.PASS, "SAVE EMPLOYEE DETAILS PASSED");
+
     }
 
 	@AfterEach
 	public void close(){
+
+		extentReports.flush();
 
 		if(driver != null){
 			driver.quit();

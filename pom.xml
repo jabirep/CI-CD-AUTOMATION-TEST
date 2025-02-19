@@ -92,6 +92,12 @@
     	<version>7.10.2</version>
     	<scope>test</scope>
 	</dependency>
+	<dependency>
+    	<groupId>com.aventstack</groupId>
+    	<artifactId>extentreports</artifactId>
+    	<version>5.1.2</version> <!-- Use the latest version available -->
+	</dependency>
+
 	</dependencies>
 
 	<build>
