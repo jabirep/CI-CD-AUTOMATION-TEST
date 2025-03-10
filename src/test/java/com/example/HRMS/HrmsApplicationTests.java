@@ -1,29 +1,12 @@
 package com.example.HRMS;
 
-import java.time.Duration;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 
 @SpringBootTest
 class HrmsApplicationTests {
 
-	public static WebDriver driver;
+	/*public static WebDriver driver;
 	public static ExtentSparkReporter extentSparkReporter;
 	public static ExtentReports extentReports;
 	public static ExtentTest extentTest;
@@ -104,6 +87,6 @@ class HrmsApplicationTests {
 			driver.quit();
 		}
 		
-	}
+	}*/
 
 }
