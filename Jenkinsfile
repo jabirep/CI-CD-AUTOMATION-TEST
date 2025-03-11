@@ -18,14 +18,12 @@ pipeline {
                 git branch: 'main', 
                 url: 'https://github.com/jabirep/CI-CD-AUTOMATION-TEST.git',
                 credentialsId: 'f6b4b94c-cf4b-4015-9ec0-3e7afbf90d05'
-            
             }
         }
 
         // Stage 2: Build the project using Maven
         stage('Build') {
             steps {
-                //bat 'mvn clean package'
                 script {
                     // Build the Docker image for your app
                     bat "docker build -t ${REGISTRY}/${IMAGE_NAME}:latest ."
@@ -55,22 +53,18 @@ pipeline {
             steps {
                 script {
                     // Clean up the Docker containers after tests
-                    sh "docker-compose -f docker-compose.test.yml down"
+                    bat "docker-compose -f docker-compose.test.yml down"
                 }
             }
-        
+        }
 
-        // Stage 3: Run unit tests
-        /*stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }*/
+        // Stage 3: Test Docker (optional, if you want to check running Docker containers)
         stage('Test Docker') {
             steps {
                 bat 'docker ps'
             }
         }
+
         stage('Deploy') {
             steps {
                 script {
@@ -80,11 +74,11 @@ pipeline {
                         docker build -t ${IMAGE_NAME}:${TAG_NAME} .
                     """
                     // Step 2: Push Docker image to Docker registry (optional)
-                   /* echo "Pushing Docker image to registry..."
+                    /* echo "Pushing Docker image to registry..."
                     bat """
                         docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                         docker push ${IMAGE_NAME}:${TAG_NAME}
-                    """*/
+                    """ */
                     
                     // Step 3: Run Docker container (Deploy)
                     echo "Deploying Docker container..."
@@ -93,14 +87,15 @@ pipeline {
                     """
                 }
             }
-    }
+        }
     }
 
     post {
-    success {
-        echo 'Build and tests completed successfully! and deployed'
-    }
-    failure {
-        echo 'Build or tests failed!'
+        success {
+            echo 'Build and tests completed successfully and deployed!'
+        }
+        failure {
+            echo 'Build or tests failed!'
+        }
     }
 }
