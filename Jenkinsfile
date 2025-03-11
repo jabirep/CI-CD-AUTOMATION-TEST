@@ -76,14 +76,14 @@ pipeline {
         }
 
 
-        stage('Clean Up') {
+        /*stage('Clean Up') {
             steps {
                 script {
                     // Clean up the Docker containers after tests
                     bat "docker-compose -f docker-compose.test.yml down"
                 }
             }
-        }
+        }*/
 
         // Stage 3: Test Docker (optional, if you want to check running Docker containers)
         stage('Test Docker') {
