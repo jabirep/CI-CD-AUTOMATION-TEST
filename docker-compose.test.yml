@@ -44,8 +44,7 @@ services:
     environment:
       - TEST_ENV=test
     working_dir: /app
-    user: root #run as root user
-    command: mvn test  # Run Selenium tests using Maven
+    command: bash -c "chmod -R 777 /app/target && mvn test" # Run Selenium tests using Maven
     volumes:
       - .:/app  # Mount your tests directory to the container
 
