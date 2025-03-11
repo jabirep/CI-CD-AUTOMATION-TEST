@@ -65,6 +65,8 @@ pipeline {
             }
 
             if (testRunnerStatus) {
+                // If you are using docker-compose, use the service name
+                bat 'docker-compose exec -T test-runner rm -rf /app/target'
                 // Run tests once the container is ready
                 bat "docker-compose -f docker-compose.test.yml exec test-runner mvn clean test"
                 bat "docker-compose -f docker-compose.test.yml logs test-runner"
