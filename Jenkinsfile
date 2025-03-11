@@ -22,7 +22,7 @@ pipeline {
         }
 
         // Stage 2: Build the project using Maven
-        stage('Build') {
+        stage('Build jar file') {
             steps {
                 script {
                     // Build the project using Maven to generate the JAR file
