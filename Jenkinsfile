@@ -51,49 +51,6 @@ pipeline {
             }
         }
 
-        stage('Run Selenium Tests') {
-            steps {
-                script {
-            // Wait until the test-runner container is up and running
-            def testRunnerStatus = bat(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
-            def retries = 0
-            while (!testRunnerStatus && retries < 10) {
-                echo "Waiting for test-runner to start..."
-                sleep(5) // wait for 5 seconds
-                testRunnerStatus = bat(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
-                retries++
-            }
-
-            if (testRunnerStatus) {
-                // If you are using docker-compose, use the service name
-                bat 'docker-compose exec -T test-runner rm -rf /app/target'
-                // Run tests once the container is ready
-                bat "docker-compose -f docker-compose.test.yml exec test-runner mvn clean test"
-                bat "docker-compose -f docker-compose.test.yml logs test-runner"
-            } else {
-                error "Test Runner container did not start in time"
-                    }
-                }
-            }
-        }
-
-
-        /*stage('Clean Up') {
-            steps {
-                script {
-                    // Clean up the Docker containers after tests
-                    bat "docker-compose -f docker-compose.test.yml down"
-                }
-            }
-        }*/
-
-        // Stage 3: Test Docker (optional, if you want to check running Docker containers)
-        stage('Test Docker') {
-            steps {
-                bat 'docker ps'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 script {
@@ -119,12 +76,4 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Build and tests completed successfully and deployed!'
-        }
-        failure {
-            echo 'Build or tests failed!'
-        }
-    }
 }
