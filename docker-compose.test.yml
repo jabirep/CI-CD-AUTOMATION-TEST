@@ -38,13 +38,13 @@ services:
   # Test Runner (Running Selenium WebDriver Tests)
   test-runner:
     image: maven:3.8.4-jdk-11  # Or use a custom image with Java/Maven
+    user: root
     depends_on:
       - myapp  # Wait for the app to be ready
       - chrome  # Ensure that the Chrome browser container is up
     environment:
       - TEST_ENV=test
     working_dir: /app
-    user: root
     command: bash -c "chmod -R 777 /app/target && mvn test" # Run Selenium tests using Maven
     volumes:
       - .:/app  # Mount your tests directory to the container
