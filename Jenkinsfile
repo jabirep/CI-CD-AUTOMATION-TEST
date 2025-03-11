@@ -66,7 +66,7 @@ pipeline {
 
             if (testRunnerStatus) {
                 // Run tests once the container is ready
-                bat "docker-compose -f docker-compose.test.yml exec test-runner mvn test"
+                bat "docker-compose -f docker-compose.test.yml exec test-runner mvn clean test"
                 bat "docker-compose -f docker-compose.test.yml logs test-runner"
             } else {
                 error "Test Runner container did not start in time"
