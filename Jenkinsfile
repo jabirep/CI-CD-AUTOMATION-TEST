@@ -55,12 +55,12 @@ pipeline {
             steps {
                 script {
             // Wait until the test-runner container is up and running
-            def testRunnerStatus = sh(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
+            def testRunnerStatus = bat(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
             def retries = 0
             while (!testRunnerStatus && retries < 10) {
                 echo "Waiting for test-runner to start..."
                 sleep(5) // wait for 5 seconds
-                testRunnerStatus = sh(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
+                testRunnerStatus = bat(script: 'docker-compose -f docker-compose.test.yml ps -q test-runner', returnStdout: true).trim()
                 retries++
             }
 
