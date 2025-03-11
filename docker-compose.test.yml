@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  myapp:
+    build: .
+    ports:
+      - "8083:8080"  # Expose the app on port 8083 for testing
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/employee_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: test
+    depends_on:
+      - mysql-db
+    entrypoint: ["java", "-jar", "/app/myapp.jar"]
+
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: employee_db
+    ports:
+      - "3308:3306"  # Map MySQL to a different port for testing
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--host=mysql-db", "--user=root", "--password=pass"]
+      interval: 10s
+      retries: 5
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+
+  # Chrome for Selenium WebDriver testing
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"  # Expose Selenium WebDriver on port 4444
+    volumes:
+      - /dev/shm:/dev/shm  # Prevent issues with Chrome running out of shared memory
+
+  # Test Runner (Running Selenium WebDriver Tests)
+  test-runner:
+    image: maven:3.8.4-jdk-11  # Or use a custom image with Java/Maven
+    depends_on:
+      - myapp  # Wait for the app to be ready
+      - chrome  # Ensure that the Chrome browser container is up
+    environment:
+      - TEST_ENV=test
+    working_dir: /app
+    command: mvn test  # Run Selenium tests using Maven
+    volumes:
+      - ./src/test:/app/src/test  # Mount your tests directory to the container
+
+volumes:
+  mysql-test-data:  # Persist MySQL data
