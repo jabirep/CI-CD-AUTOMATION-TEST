@@ -7,7 +7,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/employee_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: pass
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
       SPRING_PROFILES_ACTIVE: test
     depends_on:
       - mysql-db
@@ -46,7 +46,7 @@ services:
     working_dir: /app
     command: mvn test  # Run Selenium tests using Maven
     volumes:
-      - ./src/test:/app/src/test  # Mount your tests directory to the container
+      - .:/app  # Mount your tests directory to the container
 
 volumes:
   mysql-test-data:  # Persist MySQL data
