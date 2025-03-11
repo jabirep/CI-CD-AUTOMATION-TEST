@@ -25,6 +25,17 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Build the project using Maven to generate the JAR file
+                    bat "mvn clean package"
+                    // After Maven build, you should have the target/HRMS-0.0.1-SNAPSHOT.jar file
+                }
+            }
+        }
+
+        // Stage 2: Build the project using Maven
+        stage('Build') {
+            steps {
+                script {
                     // Build the Docker image for your app
                     bat "docker build -t ${REGISTRY}/${IMAGE_NAME}:latest ."
                 }
