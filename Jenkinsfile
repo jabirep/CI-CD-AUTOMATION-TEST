@@ -8,6 +8,7 @@ pipeline {
         DOCKER_PASSWORD = 'Subaida@415434'
         IMAGE_NAME = 'jabirep/hrms'
         TAG_NAME = 'latest'
+        REGISTRY = "docker.io"
     }
 
     stages {
@@ -15,7 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', 
-                url: 'https://github.com/jabirep/CI-CD-REPOSITORY.git',
+                url: 'https://github.com/jabirep/CI-CD-AUTOMATION-TEST.git',
                 credentialsId: 'f6b4b94c-cf4b-4015-9ec0-3e7afbf90d05'
             
             }
@@ -24,9 +25,40 @@ pipeline {
         // Stage 2: Build the project using Maven
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                //bat 'mvn clean package'
+                script {
+                    // Build the Docker image for your app
+                    bat "docker build -t ${REGISTRY}/${IMAGE_NAME}:latest ."
+                }
             }
         }
+
+        stage('Deploy to Testing') {
+            steps {
+                script {
+                    // Start the app, MySQL, and Selenium containers
+                    bat "docker-compose -f docker-compose.test.yml up -d"
+                }
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                script {
+                    // Run Selenium WebDriver tests via Maven
+                    bat "docker-compose -f docker-compose.test.yml exec test-runner mvn test"
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                script {
+                    // Clean up the Docker containers after tests
+                    sh "docker-compose -f docker-compose.test.yml down"
+                }
+            }
+        
 
         // Stage 3: Run unit tests
         /*stage('Test') {
