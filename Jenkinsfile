@@ -79,7 +79,7 @@ pipeline {
             }
         }
 
-        /*stage('Deploy') {
+        stage('Deploy') {
             steps {
                 script {
                     // Step 1: Build Docker image
@@ -92,7 +92,7 @@ pipeline {
                     bat """
                         docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                         docker push ${IMAGE_NAME}:${TAG_NAME}
-                    """ 
+                    """ */
                     
                     // Step 3: Run Docker container (Deploy)
                     echo "Deploying Docker container..."
@@ -101,7 +101,7 @@ pipeline {
                     """
                 }
             }
-        }*/
+        }
     }
 
 }
