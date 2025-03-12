@@ -78,6 +78,14 @@ pipeline {
                 }
             }
         }
+        // Stage 1: Checkout code from GitHub
+        stage('Checkout for production') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/jabirep/CI-CD-AUTOMATION-TEST.git',
+                credentialsId: 'f6b4b94c-cf4b-4015-9ec0-3e7afbf90d05'
+            }
+        }
 
         stage('Deploy') {
             steps {
