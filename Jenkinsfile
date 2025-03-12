@@ -65,7 +65,7 @@ pipeline {
         }
 
         // Stage 6: Run Selenium and TestNG Tests
-        stage('Run Selenium and TestNG Tests') {
+        stage('Run Selenium and junit Tests') {
             steps {
                 script {
                     // Assuming the tests are inside a directory like 'tests'
