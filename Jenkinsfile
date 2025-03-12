@@ -9,6 +9,8 @@ pipeline {
         IMAGE_NAME = 'jabirep/hrms'
         TAG_NAME = 'latest'
         REGISTRY = "docker.io"
+        TEST_REPO_URL = 'https://github.com/jabirep/CI-CD-TEST-REPOSITORY.git'
+        TEST_REPO_BRANCH = 'main'
     }
 
     stages {
@@ -47,6 +49,32 @@ pipeline {
                 script {
                     // Start the app, MySQL, and Selenium containers
                     bat "docker-compose -f docker-compose.test.yml up -d"
+                }
+            }
+        }
+
+        // Stage 5: Clone Selenium Test Repository
+        stage('Clone Selenium Test Repo') {
+            steps {
+                script {
+                    // Clone the Selenium test repository
+                    git url: "${TEST_REPO_URL}", branch: "${TEST_REPO_BRANCH}",
+                    credentialsId: 'f6b4b94c-cf4b-4015-9ec0-3e7afbf90d05'
+                }
+            }
+        }
+
+        // Stage 6: Run Selenium and TestNG Tests
+        stage('Run Selenium and TestNG Tests') {
+            steps {
+                script {
+                    // Assuming the tests are inside a directory like 'tests'
+                    // and the pom.xml is located in your test repository.
+                    bat """
+                        mvn clean test
+                    """
+                    // This assumes that the TestNG tests are configured in a testng.xml file
+                    // If you have a different way of running the tests (e.g., using TestNG annotations directly), adjust accordingly.
                 }
             }
         }
