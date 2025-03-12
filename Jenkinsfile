@@ -70,9 +70,9 @@ pipeline {
                 script {
                     // Assuming the tests are inside a directory like 'tests'
                     // and the pom.xml is located in your test repository.
-                    bat """
-                        mvn clean test
-                    """
+                   dir('CI-CDTEST') {
+                     bat 'mvn clean test'
+}
                     // This assumes that the TestNG tests are configured in a testng.xml file
                     // If you have a different way of running the tests (e.g., using TestNG annotations directly), adjust accordingly.
                 }
